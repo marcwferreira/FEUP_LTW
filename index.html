@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang='pt'>
+    <head>
+        <meta charset=UTF-8>
+        <!-- information about page-->
+        <title>Mancala</title>
+        <link rel="shortcut icon" href="/imgs/icon.ico">
+        <meta name="keywords" content="mancala">
+        <meta name="description" content="Um lugar para jogares mancala online!">
+        <meta name="author" content="LTW Class">
+        <!--JavaScript files-->
+        <script src="/javascript/main.js" defer></script>
+        <script src="/javascript/Game.js" defer></script>
+        <script src="/javascript/Board.js" defer></script>
+        <script src="/javascript/Storage.js" defer></script>
+        <script src="/javascript/PlayerCavities.js" defer></script>
+        <script src="/javascript/Cavity.js" defer></script>
+        <script src="/javascript/serverfetch.js" defer></script>
+        <!-- css document & device scaling -->
+        <link rel="stylesheet" href="style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div class="organizar">
+            <div class="menu">
+                <div class="logotipo">
+                    <img src="/imgs/logo.png" alt="Mancala Online">
+                </div>
+                <div class="instrucoes">
+                    <a href="#" onclick="shownPage(1)">Jogo</a>
+                </div>
+                <div class="configuracoes">
+                    <a href="#" onclick="shownPage(2)">Instruções</a>
+                </div>
+                <div class="pagina_jogo">
+                    <a href="#" onclick="shownPage(3)">Configurações</a>
+                </div>
+                <div class="classificacoes">
+                    <a href="#" onclick="shownPage(4)">Classificações</a>
+                </div>
+                <br><br><br><br>
+                <div class = "login" id="loginSpace">
+                    <p>Login</p>
+
+                    Username: <input type='text' id='nick' class="loginTextBox">
+                    Password: <input type='password' id='password' class="loginTextBox">
+                    <input type="submit" id="loginButton" class="login_button_it" value = "Login">
+
+                </div>
+            </div>
+            <div class=menu_pages>
+                <div class="jogo" id="jogo">
+                    <div class="info_jogador">
+                        <input type="button" id="game_button_it" onclick = "startGame();" value = "Começar Jogo">
+                    </div>
+                    <div class="tabuleiro" id="boardPlace">
+                        <!--Tabuleiros do jogo, generated with js-->
+                    </div>
+                    <div class="info_rodada">
+                        <h2 id="roundInfo">Não há um jogo ativo!</h2>
+                    </div>
+                </div>
+                <div class="instructions" id="instructions">
+                    <h1>Instruções</h1>
+                    <div class="instr_text">
+                        <!--<li>Término do jogo: quando um dos jogadores fica sem sementes-->
+                            <b>Começo do jogo:</b>
+                            <ul>
+                                <li>Escolher uma cavidade do seu lado (não pode ser o armazém)
+                                <li>As N sementes da cavidade escolhida são recolhidas e colocadas nas N cavidades seguintes, uma a uma
+                            </ul>
+                            <b>Decorrer do jogo:</b>
+                              <ul>
+                                <li>As sementes não podem ser semeadas no armazém do adversário. Caso cheguem a essa cavidade, devem continuar a ser semeadas para o lado do jogador
+                                <li>Última semente no seu armazém: jogador volta a jogar
+                                <li>Última semente em cavidade vazia sua: transferir as sementes na cavidade oposta do adversário e a última semente semeada para o seu armazém
+                            </ul>
+                            <b>Término do jogo:</b>
+                              <ul>
+                                <li>Termina quando um dos jogadores não pode jogar
+                                <li>O outro jogador recolhe sementes nas suas cavidades e coloca-as no armazém
+                                <li>Vencedor: jogador cujo armazém tem mais sementes
+                              </ul>
+
+                    </div>
+                </div>
+                <div class ="config" id="config">
+                    <h1>Configurações</h1>
+                    <div class="config_text">
+                        <form><b>Número de cavidades (para cada jogador):</b>
+                            <select size=1 name="size" onchange="changeCavidadeNum()" id="select_cavidades">
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6" selected>6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </form>
+                        <form><b>Número de sementes por cavidade:</b>
+                            <select size=1 name="size" onchange="changeSementeNum()" id="select_sementes">
+                                <option value="3">3</option>
+                                <option value="4" selected>4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </form>
+                        <form>
+                            <b>Adversário:</b>
+                            <input type="radio" name="oponent" value="computer" onchange="changeOponent(this)" checked>Computador
+                            <input type="radio" name="oponent" value="other_oponent" onchange="changeOponent(this)">Outro Jogador
+                        </form>
+                        <form>
+                            <b>Início de jogo:</b>
+                            <input type="radio" name="starter" value="1" onchange="changeBegin(this)" checked>Eu mesmo
+                            <input type="radio" name="starter" value="2" onchange="changeBegin(this)">Outro adversário
+                        </form>
+                        <form>
+                            <b>Nível de dificuldade:</b>
+                            <input type="radio" name="difficulty" value="easy" onchange="changeDifficulty(this)" checked>Fácil
+                            <input type="radio" name="difficulty" value="hard" onchange="changeDifficulty(this)">Difícil                        
+                        </form>
+                    </div>
+                </div>
+                <div class = "classification" id="classification">
+                    <h1>Classificações</h1>
+                    <input type="button" id="classificationButton" onclick = "getRankings();" value = "Atualizar">
+                    <br>
+                    <div id="rankingShow">
+                        <p>Ainda não há placar.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
